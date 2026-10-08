@@ -1,0 +1,9 @@
+﻿/* ============================================================================
+   HealthVideoBanner standby panel
+   Shown when the YouTube embed cannot be reached (blocked hospital network),
+   so the board never shows an unexplained black rectangle.
+   ============================================================================ */
+
+.hvb-standby-pulse {
+  
+}

@@ -1,0 +1,55 @@
+/* ============================================================================
+   CARTOON MOTION - patient dashboard mascots
+   ----------------------------------------------------------------------------
+   Hand-drawn inline SVG characters animated entirely in CSS. No <img>, no
+   external sprite sheet, no network request, so nothing can 404 or show a
+   broken image. Every character is built from vector shapes, which keeps the
+   bundle small and renders crisply at any TV/laptop size.
+   ============================================================================ */
+
+/* Lub-dub heartbeat: two quick thumps then a rest. Reads as "alive". */
+
+.cq-heartbeat {  transform-origin: center; }
+
+/* Springy bounce for walking mascots */
+
+.cq-bounce {  transform-origin: bottom center; }
+
+.cq-bounce-slow {  transform-origin: center; }
+
+/* Idle blink: eyes squash open/closed */
+
+.cq-eye {  transform-origin: center; transform-box: fill-box; }
+.cq-eye-2 {   transform-origin: center; transform-box: fill-box; }
+
+/* Gentle side-to-side tilt for curious characters */
+
+.cq-tilt {  transform-origin: bottom center; }
+
+/* Sparkle twinkle */
+
+.cq-twinkle {  transform-origin: center; }
+.cq-twinkle-2 {  transform-origin: center; }
+.cq-twinkle-3 {  transform-origin: center; }
+
+/* Cartoon cloud drift */
+
+.cq-cloud {  }
+
+/* Speech bubble pop */
+
+.cq-pop {  transform-origin: center; }
+
+/* Confetti fall for the celebration state */
+
+.cq-confetti {  transform-origin: center; }
+
+/* Waving arm */
+
+.cq-wave-arm {  transform-origin: right top; }
+
+/* Typing dots inside a cartoon bubble */
+
+.cq-bubble-dot {  }
+.cq-bubble-dot-2 {  }
+.cq-bubble-dot-3 {  }

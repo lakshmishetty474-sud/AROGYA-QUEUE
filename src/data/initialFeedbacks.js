@@ -1,0 +1,38 @@
+export const INITIAL_FEEDBACKS = [
+  {
+    id: 'FB-901',
+    patientName: 'Kavita Sundaram',
+    mobile: '9845123456',
+    hospitalId: 'HOSP-01',
+    department: 'General Medicine',
+    doctor: 'Dr. Priya Nair',
+    rating: 5,
+    categories: ['Doctor Care', 'Staff Courtesy'],
+    comments: 'Dr. Priya was very empathetic and explained my prescription clearly. The digital queue was transparent.',
+    createdAt: '2026-09-05T16:20:00Z',
+  },
+  {
+    id: 'FB-902',
+    patientName: 'Ramesh Patel',
+    mobile: '9876543210',
+    hospitalId: 'HOSP-01',
+    department: 'Cardiology',
+    doctor: 'Dr. Arvind Sharma',
+    rating: 4,
+    categories: ['Doctor Care', 'Facility Cleanliness'],
+    comments: 'Excellent clinical attention during my ECG. Waiting area was very well organized.',
+    createdAt: '2026-09-06T12:45:00Z',
+  },
+  {
+    id: 'FB-903',
+    patientName: 'Sunita Rao',
+    mobile: '9740987654',
+    hospitalId: 'HOSP-01',
+    department: 'Pediatrics',
+    doctor: 'Dr. Sneha Roy',
+    rating: 5,
+    categories: ['Wait Time', 'Doctor Care'],
+    comments: 'Fast token check-in and minimum wait time. Very kid-friendly atmosphere.',
+    createdAt: '2026-09-06T14:10:00Z',
+  }
+];

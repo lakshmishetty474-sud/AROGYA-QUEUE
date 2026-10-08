@@ -1,0 +1,163 @@
+/* ============================================================================
+   LOGIN SHELL - calm hospital surface carrying the AROGYA QUEUE watermark
+   ----------------------------------------------------------------------------
+   The logo is painted as a single tiled watermark at 8% opacity on a light
+   #f0f9ff field, so it reads as a faint background pattern and never competes
+   with the form. Everything is deliberately static: no Lottie, no drifting
+   orbs, no looping motion.
+
+   The card is centred, 440px wide, 28px radius, white, with the credit line
+   beneath it. Layout is column-flex so the card and footer stay together and
+   the whole group stays vertically centred on short viewports too.
+   ============================================================================ */
+
+.login-shell {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 1rem;
+  background: #f0f9ff;
+  color: #1e293b;
+}
+
+.dark .login-shell {
+  background: #0b1220;
+  color: #e2e8f0;
+}
+
+/* ---- logo watermark, tiled at 8% ---- */
+.login-watermark {
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  pointer-events: none;
+  background-image: url('/arogya-mark-300.png');
+  background-size: 230px 190px;
+  background-repeat: repeat;
+  background-position: center;
+}
+
+/* Fallback texture, only painted while the logo bitmap is unavailable, so the
+   surface still looks deliberate and never shows a broken-image glyph. */
+.login-bg-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(to right, rgba(13, 148, 136, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(13, 148, 136, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 78%);
+  -webkit-mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 78%);
+}
+
+.dark .login-bg-pattern {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+}
+
+/* Legibility scrim: sits above the watermark, below the form. */
+.login-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(240, 249, 255, 0.8) 0%,
+    rgba(240, 249, 255, 0.58) 48%,
+    rgba(240, 249, 255, 0.86) 100%
+  );
+}
+
+.dark .login-scrim {
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(11, 18, 32, 0.82) 0%,
+    rgba(11, 18, 32, 0.62) 48%,
+    rgba(11, 18, 32, 0.9) 100%
+  );
+}
+
+/* ---- the form card ---- */
+.login-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 440px;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 14px 34px -10px rgba(15, 23, 42, 0.16),
+    0 34px 70px -28px rgba(15, 23, 42, 0.22);
+  overflow: hidden;
+}
+
+.dark .login-card {
+  background: #0f172a;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.35),
+    0 18px 40px -14px rgba(0, 0, 0, 0.55);
+}
+
+.login-card-header {
+  padding: 1.75rem 1.5rem 1rem;
+  text-align: center;
+}
+
+.login-card-body {
+  padding: 0 1.5rem 1.5rem;
+}
+
+/* Brand mark: the real logo when present, gradient tile otherwise. */
+.login-brand-mark {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 0.8rem;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1e9e7a 0%, #1ba3a3 55%, #1b7fc4 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 20px -8px rgba(27, 163, 163, 0.5);
+}
+
+.login-brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---- footer credit ---- */
+.login-footer {
+  position: relative;
+  z-index: 10;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.login-footer p {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: #9ca3af;
+}
+
+.dark .login-footer p {
+  color: #64748b;
+}
+
+@media (max-width: 640px) {
+  .login-shell { padding: 0.75rem; }
+  .login-watermark { background-size: 150px 124px; opacity: 0.07; }
+  .login-card { border-radius: 22px; }
+}

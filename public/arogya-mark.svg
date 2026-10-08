@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="230 100 690 570" width="1024" height="846" role="img" aria-label="Arogya Queue emblem">
+  <defs>
+    <linearGradient id="leafL" x1="0.1" y1="1" x2="0.9" y2="0">
+      <stop offset="0" stop-color="#63CE8C"/>
+      <stop offset="0.5" stop-color="#33B47E"/>
+      <stop offset="1" stop-color="#1E9E7A"/>
+    </linearGradient>
+    <linearGradient id="leafL2" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#3FBF8E"/>
+      <stop offset="1" stop-color="#199C86"/>
+    </linearGradient>
+    <linearGradient id="legR" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#45C2A0"/>
+      <stop offset="0.45" stop-color="#1BA3A3"/>
+      <stop offset="1" stop-color="#1B7FC4"/>
+    </linearGradient>
+    <linearGradient id="crossG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#63CE8C"/>
+      <stop offset="0.5" stop-color="#1BA3A3"/>
+      <stop offset="1" stop-color="#1B7FC4"/>
+    </linearGradient>
+    <linearGradient id="waveG" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#63CE8C"/>
+      <stop offset="0.45" stop-color="#1BA3A3"/>
+      <stop offset="1" stop-color="#1B7FC4"/>
+    </linearGradient>
+  </defs>
+  <path d="M258 636 C 224 486 268 296 424 172 C 458 146 500 132 528 148 C 548 160 556 182 552 204 C 508 300 470 452 462 636 C 462 652 448 660 436 652 C 320 588 276 616 258 636 Z" fill="url(#leafL)"/>
+  <path d="M300 630 C 282 520 306 400 372 330 C 390 306 418 312 416 342 C 408 452 388 546 372 632 C 368 650 306 652 300 630 Z" fill="url(#leafL2)" opacity="0.9"/>
+  <path d="M534 150 C 686 214 806 380 872 556 C 892 610 866 646 826 630 C 706 578 630 470 560 372 C 534 334 512 306 512 278 C 512 226 512 176 534 150 Z" fill="url(#legR)"/>
+  <rect x="470" y="236" width="42" height="124" rx="21" fill="url(#crossG)"/>
+  <rect x="429" y="277" width="124" height="42" rx="21" fill="url(#crossG)"/>
+  <g fill="#0A4A4C">
+    <circle cx="600" cy="392" r="33"/>
+    <path d="M600 434 c -38 0 -62 25 -62 61 l0 36 l124 0 l0 -36 c 0 -36 -24 -61 -62 -61 Z"/>
+  </g>
+  <g fill="#17998F">
+    <circle cx="702" cy="414" r="27"/>
+    <path d="M702 450 c -31 0 -50 20 -50 50 l0 31 l100 0 l0 -31 c 0 -30 -19 -50 -50 -50 Z"/>
+  </g>
+  <g fill="#45A6DC">
+    <circle cx="786" cy="436" r="21"/>
+    <path d="M786 466 c -25 0 -40 16 -40 40 l0 25 l80 0 l0 -25 c 0 -24 -15 -40 -40 -40 Z"/>
+  </g>
+  <path d="M438 590 C 528 528 664 522 828 556 C 852 561 854 592 832 592 C 664 566 546 570 460 622 C 434 634 420 606 438 590 Z" fill="url(#waveG)"/>
+</svg>

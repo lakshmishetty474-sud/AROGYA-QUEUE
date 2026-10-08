@@ -1,0 +1,98 @@
+/* ============================================================================
+   AROGYA QUEUE - DASHBOARD MOTION KIT
+   ----------------------------------------------------------------------------
+   Every animation here is pure CSS/SVG. There are no <video> elements, no
+   external image hosts and no network requests, so nothing can 404, nothing
+   depends on the internet, and no broken-media placeholder can appear.
+
+   All colour is driven by the theme tokens, so every widget reads correctly
+   in both light and dark mode.
+   ============================================================================ */
+
+/* ---------- ambient drifting field (login, overview, nurse) ---------- */
+
+.mq-drift-a {  }
+.mq-drift-b {  }
+.mq-drift-c {  }
+
+/* ---------- soft breathing lift ---------- */
+
+.mq-lift {  }
+.mq-lift-2 {  }
+.mq-lift-3 {  }
+
+/* ---------- live status dot ---------- */
+
+.mq-blink {  }
+
+.mq-ping {  }
+
+/* ---------- scrolling marquee ---------- */
+
+.mq-marquee-track {
+  display: flex;
+  width: max-content;
+  
+}
+.mq-marquee:hover .mq-marquee-track {  }
+
+/* ---------- indeterminate progress bar ---------- */
+
+.mq-indeterminate {  }
+
+/* ---------- sweeping radar ---------- */
+
+.mq-radar-sweep {  transform-origin: 50% 50%; }
+
+.mq-radar-ping {  }
+
+/* ---------- spinning centrifuge / processor ---------- */
+
+.mq-spin {  }
+.mq-spin-slow {  }
+
+/* ---------- ECG / vitals waveform ---------- */
+
+.mq-wave {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  
+}
+
+/* ---------- token ring: rotating conic border ---------- */
+
+.mq-conic {  }
+
+/* ---------- occupancy bars growing ---------- */
+
+.mq-grow-y {  transform-origin: bottom; }
+
+.mq-grow-x {  transform-origin: left; }
+
+/* ---------- shimmer skeleton ---------- */
+
+.mq-shimmer {
+  background: linear-gradient(100deg, transparent 20%, rgba(129, 140, 248, 0.28) 50%, transparent 80%);
+  background-size: 220% 100%;
+  
+}
+
+/* ---------- "AI thinking" bouncing dots ---------- */
+
+.mq-bounce-dot {  }
+.mq-bounce-dot-2 {  }
+.mq-bounce-dot-3 {  }
+
+/* ---------- newly-called token slam-in ---------- */
+
+.mq-token-in {  }
+
+/* ---------- floating icon bubbles ---------- */
+
+.mq-float {  }
+.mq-float-2 {  }
+.mq-float-3 {  }
+
+/* ---------- sweeping highlight for tables/cards ---------- */
+
+.mq-sweep-x {  }

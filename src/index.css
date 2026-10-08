@@ -1,0 +1,786 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   DARK MODE - CLASS STRATEGY (the actual theme-switching fix)
+   ----------------------------------------------------------------------------
+   Tailwind v4 defaults the `dark:` variant to the OS setting via
+   `@media (prefers-color-scheme: dark)`. This app instead toggles a `.dark`
+   CLASS on <html> from AppContext (theme state, persisted to storage and
+   exposed by the Header sun/moon button).
+
+   Without the line below, those two disagree: pressing the toggle updates the
+   class but every `dark:` utility in the app keeps following the operating
+   system, so the button appears to do nothing. Registering the variant
+   against the class makes `dark:` follow the in-app toggle, which is what the
+   UI actually offers the user.
+   ============================================================================ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-sans: 'Outfit', 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* ------------------------------------------------------------------
+       AROGYA "SIGNAL JADE" THEME
+       A refined jade/emerald ramp used as the brand primary across the whole
+       app. It reads as elegant and modern (Instagram-grade saturation and
+       contrast) while staying in the WhatsApp-adjacent green family that
+       healthcare users read as trust.
+
+       IMPORTANT: these override Tailwind's --color-teal-* tokens, so all
+       ~40 plain `teal-*` utilities already used in the JSX (bg-teal-600,
+       text-teal-500, ring-teal-500, from-teal-500 ...) retheme instantly with
+       zero component edits. Opacity variants such as bg-teal-500/20 are
+       inlined by Tailwind 4, so they are re-bound explicitly further down
+       this file. `emerald` is deliberately left untouched: it carries
+       "live / success / eligible" semantics, and it stays visually distinct.
+       ------------------------------------------------------------------ */
+    --fallback-jade-teal-50: #eefbf6;
+    --fallback-jade-teal-100: #d5f5e8;
+    --fallback-jade-teal-200: #aeead4;
+    --fallback-jade-teal-300: #79d8ba;
+    --fallback-jade-teal-400: #43bf9c;
+    --fallback-jade-teal-500: #1fa583;
+    --fallback-jade-teal-600: #12866c;
+    --fallback-jade-teal-700: #0f6b58;
+    --fallback-jade-teal-800: #105546;
+    --fallback-jade-teal-900: #0f463b;
+    --fallback-jade-teal-950: #032721;
+
+    --primary: 31 165 131;
+    --accent: 14 165 233;
+
+    /* Instagram-grade brand gradient, tuned for a clinical surface */
+    --brand-gradient: linear-gradient(135deg, #f7b733 0%, #ee2a7b 48%, #6228d7 100%);
+    --brand-jade: linear-gradient(135deg, #43bf9c 0%, #12866c 55%, #0f463b 100%);
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    color: #0f172a;
+    background-color: #f4f8f7;
+    /* Soft jade aurora wash - keeps the surface luminous rather than flat */
+    background-image:
+      radial-gradient(1100px 620px at 12% -8%, rgba(31, 165, 131, 0.10) 0%, transparent 60%),
+      radial-gradient(900px 560px at 92% 4%, rgba(14, 165, 233, 0.08) 0%, transparent 55%),
+      radial-gradient(800px 520px at 50% 108%, rgba(98, 40, 215, 0.05) 0%, transparent 60%);
+    background-attachment: fixed;
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark body {
+    color: #f1f5f9;
+    background-color: #05090f;
+    background-image:
+      radial-gradient(1100px 620px at 12% -8%, rgba(31, 165, 131, 0.16) 0%, transparent 60%),
+      radial-gradient(900px 560px at 92% 4%, rgba(14, 165, 233, 0.12) 0%, transparent 55%),
+      radial-gradient(800px 520px at 50% 108%, rgba(98, 40, 215, 0.10) 0%, transparent 60%);
+  }
+
+  /* Slightly softer, more modern focus ring (Instagram-style) */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-teal-500);
+    outline-offset: 2px;
+  }
+
+  /* Honour users who ask for less motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      
+      
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Glassmorphism & High-end UI Accents */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.dark .glass-panel {
+  background: rgba(10, 15, 29, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(30, 41, 59, 0.7);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 32px -12px rgba(15, 23, 42, 0.10);
+}
+
+.dark .glass-card {
+  background: rgba(10, 16, 28, 0.72);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 34px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Radiant Aurora Background Mesh */
+.aurora-bg {
+  background: radial-gradient(circle at 15% 15%, rgba(13, 148, 136, 0.12) 0%, transparent 40%),
+              radial-gradient(circle at 85% 20%, rgba(14, 165, 233, 0.1) 0%, transparent 45%),
+              radial-gradient(circle at 50% 85%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+              #f8fafc;
+}
+
+.dark .aurora-bg {
+  background: radial-gradient(circle at 15% 15%, rgba(13, 148, 136, 0.18) 0%, transparent 40%),
+              radial-gradient(circle at 85% 20%, rgba(14, 165, 233, 0.15) 0%, transparent 45%),
+              radial-gradient(circle at 50% 85%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+              #060913;
+}
+
+/* Glowing Border Accent */
+.glow-border-teal {
+  box-shadow: 0 0 0 1px rgba(31, 165, 131, 0.32), 0 8px 28px -8px rgba(31, 165, 131, 0.28);
+}
+
+.glow-border-cyan {
+  box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.3), 0 0 20px -3px rgba(6, 182, 212, 0.25);
+}
+
+/* Luminous Card Hover */
+.card-hover-aesthetic {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease;
+}
+.card-hover-aesthetic:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px -12px rgba(31, 165, 131, 0.22), 0 0 0 1px rgba(31, 165, 131, 0.28);
+}
+
+/* Custom Healthcare Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.45);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(13, 148, 136, 0.6);
+}
+
+/* Pulse animation for live indicators */
+
+.animate-pulse-ring {
+  
+}
+
+/* Shimmer animation for banners */
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  
+}
+
+/* Live Status Indicator Dot */
+.live-dot {
+  position: relative;
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: #10b981;
+}
+.live-dot::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 9999px;
+  background-color: rgba(16, 185, 129, 0.4);
+  
+}
+
+/* Print styles for Tokens and Receipts */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .printable-card, .printable-card * {
+    visibility: visible;
+  }
+  .printable-card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ============================================================================
+   SOCIAL-GRADE AESTHETIC UTILITIES
+   Instagram: gradient accents, story rings, luminous buttons.
+   WhatsApp : chat-bubble silhouettes, doodle surface, hairline dividers.
+   ============================================================================ */
+
+/* Instagram-style gradient text / fills */
+.aq-gradient-text {
+  background-image: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.aq-gradient-jade {
+  background-image: var(--brand-jade);
+}
+
+/* Brand gradient surface (badges, avatars, hero chips) */
+.aq-brand-surface {
+  background-image: var(--brand-gradient);
+  box-shadow: 0 8px 24px -10px rgba(238, 42, 123, 0.55);
+}
+
+/* Jade primary surface - the workhorse action colour */
+.aq-jade-surface {
+  background-image: var(--brand-jade);
+  box-shadow: 0 8px 22px -10px rgba(31, 165, 131, 0.6);
+}
+
+/* Instagram "story ring" - conic sweep used on the logo and live avatars */
+.aq-story-ring {
+  position: relative;
+  background:
+    conic-gradient(from 210deg, #f7b733, #ee2a7b, #6228d7, #1fa583, #f7b733);
+}
+
+.aq-story-ring::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: inherit;
+  background: inherit;
+  background-image: none;
+  background-color: #fff;
+}
+
+.dark .aq-story-ring::before {
+  background-color: #0b1120;
+}
+
+/* WhatsApp-style doodle surface - very low contrast, sits behind content */
+.aq-doodle {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(31, 165, 131, 0.16) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+.dark .aq-doodle {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0);
+}
+
+/* WhatsApp chat-bubble tail */
+.aq-bubble {
+  position: relative;
+  border-radius: 18px 18px 18px 4px;
+}
+
+.aq-bubble-in {
+  border-radius: 18px 18px 4px 18px;
+  background: #d9fdd3;
+  color: #0b3d2c;
+}
+
+.dark .aq-bubble-in {
+  background: #075e54;
+  color: #e9f5ef;
+}
+
+/* Press feedback is instant, not eased. The transform itself is kept so the
+   button still reacts - only the tween is removed. */
+.aq-press {
+  transition: none;
+}
+.aq-press:active {
+  transform: scale(0.97);
+}
+
+/* Hairline divider that fades at both ends (WhatsApp list style) */
+.aq-hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(100, 116, 139, 0.28), transparent);
+}
+
+/* --- Slideshow motion (used by AuthSlideshow) --- */
+
+
+.aq-slide-in {
+  
+}
+
+.aq-slide-fade {
+  
+}
+
+
+
+/* Story progress bar fills over the dwell time, then completes */
+.aq-progress-live {
+  width: 100%;
+  transform-origin: left center;
+  
+}
+
+
+/* ============================================================================
+   TAILWIND 4 OPACITY-VARIANT RE-BINDING (Signal Jade theme)
+   Tailwind 4 inlines the resolved colour for utilities like bg-teal-500/20
+   instead of referencing var(--color-teal-500). Overriding the --color-teal-*
+   tokens alone would therefore leave all 59 translucent utilities in the app
+   still painted in the old teal. These rules are deliberately UNLAYERED so
+   they take precedence over Tailwind's @layer utilities, and they reference
+   var(--color-teal-*) so they stay in sync with the tokens above.
+   Generated from actual usage across every .js and .jsx file under src.
+   ============================================================================ */  .bg-teal-400\/10 { background-color: color-mix(in srgb, var(--color-teal-400) 10%, transparent); }
+  .bg-teal-50\/40 { background-color: color-mix(in srgb, var(--color-teal-50) 40%, transparent); }
+  .bg-teal-50\/50 { background-color: color-mix(in srgb, var(--color-teal-50) 50%, transparent); }
+  .bg-teal-50\/60 { background-color: color-mix(in srgb, var(--color-teal-50) 60%, transparent); }
+  .bg-teal-50\/80 { background-color: color-mix(in srgb, var(--color-teal-50) 80%, transparent); }
+  .bg-teal-500\/10 { background-color: color-mix(in srgb, var(--color-teal-500) 10%, transparent); }
+  .bg-teal-500\/15 { background-color: color-mix(in srgb, var(--color-teal-500) 15%, transparent); }
+  .bg-teal-500\/20 { background-color: color-mix(in srgb, var(--color-teal-500) 20%, transparent); }
+  .bg-teal-600\/30 { background-color: color-mix(in srgb, var(--color-teal-600) 30%, transparent); }
+  .bg-teal-900\/60 { background-color: color-mix(in srgb, var(--color-teal-900) 60%, transparent); }
+  .bg-teal-900\/80 { background-color: color-mix(in srgb, var(--color-teal-900) 80%, transparent); }
+  .bg-teal-950\/20 { background-color: color-mix(in srgb, var(--color-teal-950) 20%, transparent); }
+  .bg-teal-950\/30 { background-color: color-mix(in srgb, var(--color-teal-950) 30%, transparent); }
+  .bg-teal-950\/40 { background-color: color-mix(in srgb, var(--color-teal-950) 40%, transparent); }
+  .bg-teal-950\/50 { background-color: color-mix(in srgb, var(--color-teal-950) 50%, transparent); }
+  .bg-teal-950\/60 { background-color: color-mix(in srgb, var(--color-teal-950) 60%, transparent); }
+  .bg-teal-950\/70 { background-color: color-mix(in srgb, var(--color-teal-950) 70%, transparent); }
+  .bg-teal-950\/80 { background-color: color-mix(in srgb, var(--color-teal-950) 80%, transparent); }
+  .border-teal-100\/50 { border-color: color-mix(in srgb, var(--color-teal-100) 50%, transparent); }
+  .border-teal-200\/50 { border-color: color-mix(in srgb, var(--color-teal-200) 50%, transparent); }
+  .border-teal-200\/60 { border-color: color-mix(in srgb, var(--color-teal-200) 60%, transparent); }
+  .border-teal-200\/80 { border-color: color-mix(in srgb, var(--color-teal-200) 80%, transparent); }
+  .border-teal-500\/20 { border-color: color-mix(in srgb, var(--color-teal-500) 20%, transparent); }
+  .border-teal-500\/30 { border-color: color-mix(in srgb, var(--color-teal-500) 30%, transparent); }
+  .border-teal-500\/40 { border-color: color-mix(in srgb, var(--color-teal-500) 40%, transparent); }
+  .border-teal-500\/50 { border-color: color-mix(in srgb, var(--color-teal-500) 50%, transparent); }
+  .border-teal-500\/60 { border-color: color-mix(in srgb, var(--color-teal-500) 60%, transparent); }
+  .border-teal-600\/40 { border-color: color-mix(in srgb, var(--color-teal-600) 40%, transparent); }
+  .border-teal-700\/50 { border-color: color-mix(in srgb, var(--color-teal-700) 50%, transparent); }
+  .border-teal-800\/40 { border-color: color-mix(in srgb, var(--color-teal-800) 40%, transparent); }
+  .border-teal-800\/60 { border-color: color-mix(in srgb, var(--color-teal-800) 60%, transparent); }
+  .border-teal-800\/80 { border-color: color-mix(in srgb, var(--color-teal-800) 80%, transparent); }
+  .border-teal-900\/40 { border-color: color-mix(in srgb, var(--color-teal-900) 40%, transparent); }
+  .border-teal-900\/50 { border-color: color-mix(in srgb, var(--color-teal-900) 50%, transparent); }
+  .border-teal-900\/60 { border-color: color-mix(in srgb, var(--color-teal-900) 60%, transparent); }
+  .border-teal-900\/80 { border-color: color-mix(in srgb, var(--color-teal-900) 80%, transparent); }
+  .from-teal-500\/10 { --tw-gradient-from: color-mix(in srgb, var(--color-teal-500) 10%, transparent); }
+  .from-teal-500\/15 { --tw-gradient-from: color-mix(in srgb, var(--color-teal-500) 15%, transparent); }
+  .from-teal-500\/20 { --tw-gradient-from: color-mix(in srgb, var(--color-teal-500) 20%, transparent); }
+  .from-teal-900\/90 { --tw-gradient-from: color-mix(in srgb, var(--color-teal-900) 90%, transparent); }
+  .ring-teal-500\/20 { --tw-ring-color: color-mix(in srgb, var(--color-teal-500) 20%, transparent); }
+  .ring-teal-500\/30 { --tw-ring-color: color-mix(in srgb, var(--color-teal-500) 30%, transparent); }
+  .shadow-teal-500\/10 { --tw-shadow-color: color-mix(in srgb, var(--color-teal-500) 10%, transparent); }
+  .shadow-teal-500\/20 { --tw-shadow-color: color-mix(in srgb, var(--color-teal-500) 20%, transparent); }
+  .shadow-teal-500\/25 { --tw-shadow-color: color-mix(in srgb, var(--color-teal-500) 25%, transparent); }
+  .shadow-teal-500\/30 { --tw-shadow-color: color-mix(in srgb, var(--color-teal-500) 30%, transparent); }
+  .text-teal-400\/70 { color: color-mix(in srgb, var(--color-teal-400) 70%, transparent); }
+  .text-teal-600\/70 { color: color-mix(in srgb, var(--color-teal-600) 70%, transparent); }
+  .to-teal-50\/30 { --tw-gradient-to: color-mix(in srgb, var(--color-teal-50) 30%, transparent); }
+  .to-teal-50\/40 { --tw-gradient-to: color-mix(in srgb, var(--color-teal-50) 40%, transparent); }
+  .to-teal-500\/10 { --tw-gradient-to: color-mix(in srgb, var(--color-teal-500) 10%, transparent); }
+  .to-teal-500\/15 { --tw-gradient-to: color-mix(in srgb, var(--color-teal-500) 15%, transparent); }
+  .to-teal-500\/5 { --tw-gradient-to: color-mix(in srgb, var(--color-teal-500) 5%, transparent); }
+  .to-teal-950\/20 { --tw-gradient-to: color-mix(in srgb, var(--color-teal-950) 20%, transparent); }
+  .to-teal-950\/50 { --tw-gradient-to: color-mix(in srgb, var(--color-teal-950) 50%, transparent); }
+  .via-teal-50\/30 { --tw-gradient-via: color-mix(in srgb, var(--color-teal-50) 30%, transparent); }
+  .via-teal-950\/20 { --tw-gradient-via: color-mix(in srgb, var(--color-teal-950) 20%, transparent); }
+  .via-teal-950\/40 { --tw-gradient-via: color-mix(in srgb, var(--color-teal-950) 40%, transparent); }
+  .via-teal-950\/80 { --tw-gradient-via: color-mix(in srgb, var(--color-teal-950) 80%, transparent); }
+
+/* ============================================================================
+   AROGYA QUEUE v2.6 - STANDARD THEME
+   ----------------------------------------------------------------------------
+   Premium / clean / minimal. Indigo primary, teal secondary, 16px radius,
+   soft indigo-tinted shadows.
+
+   Tailwind v4 is CSS-first: there is no tailwind.config.js in this project and
+   Vite's @tailwindcss/vite plugin would ignore one if it existed. The v4
+   equivalent of extending the theme is the @theme block below, which is what
+   registers the new `primary` / `card` / `bg` utilities and the `xl` radius.
+
+   The previous "Signal Jade" ramp is retained above as --fallback-jade-* so the
+   older look is still recoverable without deleting any prior CSS.
+   ============================================================================ */
+
+@theme {
+  /* Semantic colours from the standard theme spec */
+  --color-primary: #4F46E5;
+  --color-primary-hover: #4338CA;
+  --color-secondary: #0D9488;
+  --color-accent: #EEF2FF;
+  --color-card: #FFFFFF;
+  --color-bg: #F8FAFC;
+  --color-danger: #EF4444;
+  --color-warning: #F59E0B;
+  --color-surface: #1E293B;
+  --color-line: #E2E8F0;
+
+  /* 16px radius for the `xl` scale entry */
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 28px;
+
+  /* Soft indigo-tinted shadow used by .card */
+  --shadow-card: 0 4px 20px -2px rgba(79, 70, 229, 0.08);
+  --shadow-card-hover: 0 12px 32px -8px rgba(79, 70, 229, 0.16);
+}
+
+@layer base {
+  :root {
+    /* --- Standard theme tokens (authoritative source) --- */
+    --bg: #F8FAFC;
+    --card: #FFFFFF;
+    --primary: #4F46E5;
+    --primary-hover: #4338CA;
+    --secondary: #0D9488;
+    --accent: #EEF2FF;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+    --text: #1E293B;
+    --text-muted: #64748B;
+    --border: #E2E8F0;
+    --radius: 16px;
+    --shadow: 0 4px 20px -2px rgba(79, 70, 229, 0.08);
+
+    /* --- Brand gradient now resolves to the indigo primary --- */
+    --brand-primary: linear-gradient(135deg, #6366F1 0%, #4F46E5 55%, #3730A3 100%);
+    --brand-jade: var(--brand-primary); /* legacy alias kept for older markup */
+
+    /* ------------------------------------------------------------------
+       TOKEN REMAP - this is what rethemes the entire app with ZERO
+       component edits.
+
+       The app was authored against Tailwind's `teal` as its primary. Rather
+       than rewriting 3,800+ hardcoded utility strings across 52 JSX files
+       (high risk of silent breakage), we remap the underlying colour tokens:
+
+         teal -> indigo   (becomes the primary: buttons, active nav, focus)
+         sky  -> teal     (becomes the secondary: informational accents)
+         cyan -> teal     (also secondary, so sky/cyan stay in one family)
+
+       `emerald` is deliberately NOT remapped: it carries "live / success /
+       eligible" semantics and must stay green, distinct from the indigo
+       primary and the teal secondary.
+       ------------------------------------------------------------------ */
+    --color-teal-50: #EEF2FF;
+    --color-teal-100: #E0E7FF;
+    --color-teal-200: #C7D2FE;
+    --color-teal-300: #A5B4FC;
+    --color-teal-400: #818CF8;
+    --color-teal-500: #6366F1;
+    --color-teal-600: #4F46E5;
+    --color-teal-700: #4338CA;
+    --color-teal-800: #3730A3;
+    --color-teal-900: #312E81;
+    --color-teal-950: #1E1B4B;
+
+    --color-sky-50: #F0FDFA;
+    --color-sky-100: #CCFBF1;
+    --color-sky-200: #99F6E4;
+    --color-sky-300: #5EEAD4;
+    --color-sky-400: #2DD4BF;
+    --color-sky-500: #14B8A6;
+    --color-sky-600: #0D9488;
+    --color-sky-700: #0F766E;
+    --color-sky-800: #115E59;
+    --color-sky-900: #134E4A;
+    --color-sky-950: #042F2E;
+
+    --color-cyan-50: #F0FDFA;
+    --color-cyan-100: #CCFBF1;
+    --color-cyan-200: #99F6E4;
+    --color-cyan-300: #5EEAD4;
+    --color-cyan-400: #2DD4BF;
+    --color-cyan-500: #14B8A6;
+    --color-cyan-600: #0D9488;
+    --color-cyan-700: #0F766E;
+    --color-cyan-800: #115E59;
+    --color-cyan-900: #134E4A;
+    --color-cyan-950: #042F2E;
+  }
+
+  /* Spec: body uses the theme tokens and the Outfit / Inter stack.
+     Plus Jakarta Sans is retained as a fallback so a webfont failure can
+     never leave the app unstyled. */
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+/* ============================================================================
+   SPEC COMPONENT CLASSES
+   ============================================================================ */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: background-color 0.18s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Secondary / outline companions so the button family is complete */
+.btn-secondary {
+  background: var(--secondary);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: background-color 0.18s ease;
+}
+
+.btn-secondary:hover {
+  filter: brightness(0.94);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.btn-outline:hover {
+  border-color: var(--primary);
+  background: var(--accent);
+}
+
+/* Muted text helper */
+.text-muted {
+  color: var(--text-muted);
+}
+
+
+/* --- Standard theme: re-bind sky/cyan opacity variants -------------------
+   sky and cyan are remapped to the teal secondary in the standard theme.
+   Tailwind 4 inlines their resolved colours, so these translucent utilities
+   are re-bound explicitly to the new tokens. Unlayered, so they win. */  .bg-sky-50\/95 { background-color: color-mix(in srgb, var(--color-sky-50) 95%, transparent); }
+  .bg-sky-500\/15 { background-color: color-mix(in srgb, var(--color-sky-500) 15%, transparent); }
+  .bg-sky-950\/40 { background-color: color-mix(in srgb, var(--color-sky-950) 40%, transparent); }
+  .bg-sky-950\/60 { background-color: color-mix(in srgb, var(--color-sky-950) 60%, transparent); }
+  .bg-sky-950\/90 { background-color: color-mix(in srgb, var(--color-sky-950) 90%, transparent); }
+  .border-sky-200\/80 { border-color: color-mix(in srgb, var(--color-sky-200) 80%, transparent); }
+  .border-sky-500\/30 { border-color: color-mix(in srgb, var(--color-sky-500) 30%, transparent); }
+  .border-sky-800\/60 { border-color: color-mix(in srgb, var(--color-sky-800) 60%, transparent); }
+  .border-sky-900\/50 { border-color: color-mix(in srgb, var(--color-sky-900) 50%, transparent); }
+  .from-sky-600\/70 { --tw-gradient-from: color-mix(in srgb, var(--color-sky-600) 70%, transparent); }
+  .to-sky-400\/80 { --tw-gradient-to: color-mix(in srgb, var(--color-sky-400) 80%, transparent); }
+  .bg-cyan-500\/10 { background-color: color-mix(in srgb, var(--color-cyan-500) 10%, transparent); }
+  .bg-cyan-500\/12 { background-color: color-mix(in srgb, var(--color-cyan-500) 12%, transparent); }
+  .bg-cyan-500\/15 { background-color: color-mix(in srgb, var(--color-cyan-500) 15%, transparent); }
+  .bg-cyan-950\/60 { background-color: color-mix(in srgb, var(--color-cyan-950) 60%, transparent); }
+  .via-cyan-500\/10 { --tw-gradient-via: color-mix(in srgb, var(--color-cyan-500) 10%, transparent); }
+
+
+/* ============================================================================
+   PATIENT DASHBOARD ANIMATION
+   Pure CSS/SVG motion used by PatientVitalsPanel and AuthSlideshow.
+   No video files, no external hosts - these render identically offline and
+   cannot produce a broken-media placeholder.
+   ============================================================================ */
+
+/* EKG trace sweeps left to right, then repeats */
+
+.aq-ecg-draw {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  
+}
+
+/* Slow breathing pulse on the reading tiles */
+
+.aq-breathe {
+  
+}
+
+/* Drifting ambient gradient orbs behind the panel */
+
+.aq-orb-a {  }
+.aq-orb-b {  }
+
+/* Status LED blink */
+
+.aq-blink {
+  
+}
+
+/* Stagger reading tiles so they drift out of phase */
+.aq-breathe:nth-child(2) {  }
+.aq-breathe:nth-child(3) {  }
+.aq-breathe:nth-child(4) {  }
+
+
+/* ============================================================================
+   DARK MODE TOKEN SET
+   ----------------------------------------------------------------------------
+   The standard theme spec defined its tokens for light only. Because `.card`,
+   `.btn-primary` and friends read these variables, dark mode would otherwise
+   render white cards with light text on a dark page. These overrides make the
+   whole token set flip coherently when the `.dark` class is applied.
+   ============================================================================ */
+@layer base {
+  .dark {
+    --bg: #070B14;
+    --card: #0D1424;
+    --primary: #818CF8;
+    --primary-hover: #A5B4FC;
+    --secondary: #2DD4BF;
+    --accent: #1E1B4B;
+    --danger: #F87171;
+    --warning: #FBBF24;
+    --text: #E2E8F0;
+    --text-muted: #94A3B8;
+    --border: #1E293B;
+    --shadow: 0 4px 20px -2px rgba(2, 6, 23, 0.6);
+
+    /* Repoint the ambient wash at the indigo family used by the light theme */
+    --brand-gradient: linear-gradient(135deg, #4F46E5 0%, #7C3AED 52%, #0D9488 100%);
+    --brand-primary: linear-gradient(135deg, #6366F1 0%, #4F46E5 55%, #3730A3 100%);
+
+    color-scheme: dark;
+  }
+}
+
+/* ============================================================================
+   MOTION KILL-SWITCH
+   ----------------------------------------------------------------------------
+   AROGYA QUEUE is a clinical system: dashboards are static so a busy counter
+   never flickers. Every motion utility is neutralised here in one place.
+
+   Most animate and transition utilities were deleted from the markup outright.
+   A few survive inside template-literal className strings, which cannot be
+   rewritten safely by a text transform. Rather than corrupt that code, the
+   attribute selectors below catch them wherever they appear - including
+   variant-prefixed forms like hover:animate-pulse.
+
+   The queue/kiosk display is deliberately exempt: any subtree marked
+   .aq-allow-motion keeps animating.
+   ============================================================================ */
+
+[class*='animate-']:not(.aq-allow-motion):not(.aq-allow-motion *) {
+  animation: none !important;
+}
+
+[class*='transition']:not(.aq-allow-motion):not(.aq-allow-motion *) {
+  transition: none !important;
+}
+
+[class*='duration-']:not(.aq-allow-motion):not(.aq-allow-motion *),
+[class*='delay-']:not(.aq-allow-motion):not(.aq-allow-motion *) {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+}
+
+/* Older custom keyframe names used by the decorative kits (cq-blink, cq-heartbeat,
+   cq-marquee, ...). Those stylesheets no longer define the keyframes, so these
+   are belt-and-braces in case a name is reintroduced. */
+[class*='cq-']:not(.aq-allow-motion):not(.aq-allow-motion *) {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *:not(.aq-allow-motion):not(.aq-allow-motion *) {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* The document root carries its own colour transition, which the attribute
+   selectors above cannot match because its class list has no motion utility. */
+html, body, #root {
+  transition: none !important;
+}
+
+/* Doctor duty roster: the one intentional pulse, on the live dot and the
+   On Duty / Emergency badges. Everything else in the app stays static. */
+@keyframes aq-duty-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.45; transform: scale(0.82); }
+}
+
+.aq-duty-pulse {
+  animation: aq-duty-pulse 1.6s ease-in-out infinite;
+}
+
+/* The duty pulse is a deliberate exception to the motion kill-switch above:
+   it is a live-status indicator, not decoration. */
+.aq-duty-pulse {
+  animation: aq-duty-pulse 1.6s ease-in-out infinite !important;
+}

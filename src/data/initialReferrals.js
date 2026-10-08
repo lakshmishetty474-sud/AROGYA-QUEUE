@@ -1,0 +1,41 @@
+export const INITIAL_REFERRALS = [
+  {
+    id: 'REF-2026-001',
+    patientId: 'PAT-001',
+    patientName: 'Ramesh Sundaram',
+    fromHospital: 'HOSP-04',
+    fromHospitalName: 'Green Valley Hospital',
+    toHospital: 'HOSP-01',
+    toHospitalName: 'Bengaluru Central Hospital',
+    reason: 'Emergency Angiography & Cath Lab Intervention required',
+    department: 'Cardiology',
+    doctor: 'Dr. Arvind Sharma',
+    urgency: 'Critical',
+    status: 'Accepted', // Requested, Accepted, Rejected, In Transit, Completed
+    timeline: [
+      { status: 'Requested', time: '09:10 AM', note: 'Cath lab referral raised by Dr. V. Murthy' },
+      { status: 'Accepted', time: '09:22 AM', note: 'Accepted by BCH Emergency Consultant' },
+      { status: 'In Transit', time: '09:35 AM', note: 'Ambulance KA-01-GA-4501 dispatched' },
+      { status: 'Completed', time: '09:50 AM', note: 'Patient admitted into BCH Cath-ICU' },
+    ],
+    requestedAt: '2026-09-04T09:10:00Z',
+  },
+  {
+    id: 'REF-2026-002',
+    patientId: 'PAT-006',
+    patientName: 'Mohammed Farhan',
+    fromHospital: 'HOSP-02',
+    fromHospitalName: 'Arogya Medical Centre',
+    toHospital: 'HOSP-01',
+    toHospitalName: 'Bengaluru Central Hospital',
+    reason: 'Negative pressure isolation bed requested for severe respiratory distress',
+    department: 'Pulmonology',
+    doctor: 'Dr. Priya Nair',
+    urgency: 'Urgent',
+    status: 'Requested',
+    timeline: [
+      { status: 'Requested', time: '10:15 AM', note: 'Isolation ward request sent via City Grid' },
+    ],
+    requestedAt: '2026-09-04T10:15:00Z',
+  },
+];
